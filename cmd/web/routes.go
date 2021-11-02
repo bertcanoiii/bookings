@@ -19,5 +19,11 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/about", handlers.Repo.About)
 
+	//This allows us to use static files from the static folder
+	//First tell go where the static files are
+	fileServer := http.FileServer(http.Dir("./static/"))
+	//Tell the router to handle them
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
 	return mux
 }
